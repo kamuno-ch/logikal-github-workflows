@@ -14,10 +14,6 @@ on:
         description: The Google Cloud region to use
         type: string
         required: true
-      repository:
-        description: The Google Cloud Artifact Registry repository to use
-        type: string
-        required: true
       name:
         description: The name of the image
         type: string
@@ -64,7 +60,7 @@ jobs:
         env:
           name: ${{ inputs.name }}:${{ github.sha }}
           registry: ${{ inputs.region }}-docker.pkg.dev
-          registry_path: ${{ steps.gcp.outputs.project_id }}/${{ inputs.repository }}
+          registry_path: ${{ steps.gcp.outputs.project_id }}/${{ inputs.name }}
         id: image
         run: |-
           gcloud auth configure-docker --quiet marketplace.gcr.io
