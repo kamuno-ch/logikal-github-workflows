@@ -1,4 +1,4 @@
-name: Push image
+name: Publish Cloud Run job
 on:
   workflow_call:
     inputs:
@@ -7,7 +7,7 @@ on:
         type: string
         required: true
       service-account-email:
-        description: Email of the Google Cloud service account used for pushing the image
+        description: Email of the Google Cloud service account for publishing the Cloud Run job
         type: string
         required: true
       region:
@@ -15,7 +15,7 @@ on:
         type: string
         required: true
       name:
-        description: The name of the image
+        description: The name of the job
         type: string
         required: true
       dockerfile:
@@ -28,11 +28,18 @@ on:
         type: string
         required: false
         default: .
+      execute-job:
+        description: Whether to execute the Cloud Run job after updating
+        type: boolean
+        required: false
+        default: false
 
-concurrency: gcp-push-ar-image-${{ github.workflow_ref }}-${{ github.ref || github.run_id }}
+concurrency: >-
+  gcp-publish-cloud-run-job-${{ github.workflow_ref }}-${{ github.ref || github.run_id }}
+
 
 jobs:
-  push-image:
+  publish-job:
     name: Push image
     runs-on: ubuntu-24.04
     permissions:
@@ -68,3 +75,15 @@ jobs:
           docker build --tag "${image_url}" --file "${{ inputs.dockerfile }}" \
             "${{ inputs.build-path }}"
           docker push "${image_url}"
+
+      - name: Update Cloud Run job
+        run: |-
+          gcloud run jobs update "${{ inputs.name }}" \
+            --region "${{ inputs.region }}" \
+            --image "${{ steps.image.outputs.image_url }}"
+
+      - name: Execute Cloud Run job
+        if: inputs.execute-job
+        run: |-
+          gcloud run jobs execute "${{ inputs.name }}" \
+            --region "${{ inputs.region }}" --wait
