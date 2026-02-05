@@ -11,6 +11,9 @@ on:
         description: The target branch to use
         type: string
 
+concurrency: >-
+  github-branch-merge-rule-${{ github.workflow_ref }}-${{ github.ref || github.run_id }}
+
 jobs:
   check-branch:
     name: Check branch

@@ -25,6 +25,8 @@ on:
         required: false
         default: .
 
+concurrency: aws-push-ecr-image-${{ github.workflow_ref }}-${{ github.ref || github.run_id }}
+
 jobs:
   push-image:
     name: Push image

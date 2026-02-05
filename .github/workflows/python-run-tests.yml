@@ -40,19 +40,19 @@ on:
         type: boolean
         required: false
         default: true
-      gcp-testing-workload-identity-provider:
+      gcp-workload-identity-provider:
         description: Full identifier of the GitHub workload identity pool provider in Google Cloud
         type: string
         required: false
-      gcp-testing-service-account:
+      gcp-service-account-email:
         description: Email of the Google Cloud service account used for running tests
         type: string
         required: false
-      aws-testing-role:
+      aws-role:
         description: The ARN of the AWS role used for running tests
         type: string
         required: false
-      aws-testing-region:
+      aws-region:
         description: The AWS region to use for authorization
         type: string
         required: false
