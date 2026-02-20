@@ -11,17 +11,22 @@ on:
         description: The version of terragrunt-commons to use
         type: string
         required: false
-        default: v4
+        default: v5
       tfenv-version:
         description: The version of tfenv to use
         type: string
         required: false
-        default: c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54  # commit 2025-07-11 / checked 2025-10-31
+        default: c8eb402135bf6fbcd2809f6cdbf7ea1113de6e54  # commit 2025-07-11 / checked 2026-02-20
       tgenv-version:
         description: The version of tgenv to use
         type: string
         required: false
-        default: 8f87cb3bd76063d6adef2413ce0a399f773f2319  # commit 2024-06-14 / checked 2025-10-31
+        default: fc6b4bc42913126ab3c0061896ba0fa920e07a84  # commit 2025-11-18 / checked 2026-02-20
+      tflint-version:
+        description: The version of TFLint to use
+        type: string
+        required: false
+        default: 0.61.0  # release 2026-02-07 / checked 2026-02-20
 
     secrets:
       TERRAFORM_CREDENTIALS_HOSTNAME:
@@ -51,6 +56,7 @@ jobs:
             "tfenv_version": "${{ inputs.tfenv-version }}",
             "tgenv_version": "${{ inputs.tgenv-version }}",
             "terragrunt_commons_version": "${{ inputs.terragrunt-commons-version }}",
+            "tflint_verson": "${{ inputs.tflint-version }}",
           }'
 
       - name: Install Terraform binary
