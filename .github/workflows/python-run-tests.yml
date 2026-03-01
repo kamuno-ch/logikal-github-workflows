@@ -77,20 +77,20 @@ jobs:
       - name: Authenticate to Google Cloud Platform
         uses: google-github-actions/auth@v3
         env:
-          RUN_STEP: ${{ inputs.gcp-testing-service-account != '' }}
+          RUN_STEP: ${{ inputs.gcp-service-account-email != '' }}
         if: env.RUN_STEP == 'true'
         with:
-          workload_identity_provider: ${{ inputs.gcp-testing-workload-identity-provider }}
-          service_account: ${{ inputs.gcp-testing-service-account }}
+          workload_identity_provider: ${{ inputs.gcp-workload-identity-provider }}
+          service_account: ${{ inputs.gcp-service-account-email }}
 
       - name: Authenticate to Amazon Web Services
         uses: aws-actions/configure-aws-credentials@v5
         env:
-          RUN_STEP: ${{ inputs.aws-testing-role != '' }}
+          RUN_STEP: ${{ inputs.aws-role != '' }}
         if: env.RUN_STEP == 'true'
         with:
-          aws-region: ${{ inputs.aws-testing-region }}
-          role-to-assume: ${{ inputs.aws-testing-role }}
+          aws-region: ${{ inputs.aws-region }}
+          role-to-assume: ${{ inputs.aws-role }}
 
       - name: Install Python
         uses: actions/setup-python@v6
@@ -107,12 +107,12 @@ jobs:
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v3
         env:
-          RUN_STEP: ${{ inputs.gcp-testing-service-account != '' }}
+          RUN_STEP: ${{ inputs.gcp-service-account-email != '' }}
         if: env.RUN_STEP == 'true'
 
       - name: Authenticate Docker
         env:
-          RUN_STEP: ${{ inputs.gcp-testing-service-account != '' }}
+          RUN_STEP: ${{ inputs.gcp-service-account-email != '' }}
         if: env.RUN_STEP == 'true'
         run: gcloud auth configure-docker --quiet marketplace.gcr.io
 
