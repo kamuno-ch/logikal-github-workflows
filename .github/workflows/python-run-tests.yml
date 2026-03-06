@@ -70,7 +70,7 @@ jobs:
       id-token: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: ${{ inputs.fetch-depth }}
 
@@ -84,7 +84,7 @@ jobs:
           service_account: ${{ inputs.gcp-service-account-email }}
 
       - name: Authenticate to Amazon Web Services
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v6
         env:
           RUN_STEP: ${{ inputs.aws-role != '' }}
         if: env.RUN_STEP == 'true'
@@ -155,7 +155,7 @@ jobs:
         run: orb --command 'pytest ${{ inputs.pytest-args }}'
 
       - name: Upload pytest artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         if: failure() && inputs.upload-artifacts
         with:
           name: pytest-artifacts
